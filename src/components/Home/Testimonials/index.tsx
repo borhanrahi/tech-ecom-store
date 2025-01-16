@@ -1,5 +1,6 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperType } from "swiper"; // Import Swiper type explicitly
 import { useCallback, useRef } from "react";
 import testimonialsData from "./testimonialsData";
 import Image from "next/image";
@@ -10,16 +11,14 @@ import "swiper/css";
 import SingleItem from "./SingleItem";
 
 const Testimonials = () => {
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<SwiperType | null>(null); // Use SwiperType for the ref
 
   const handlePrev = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slidePrev();
+    sliderRef.current?.slidePrev(); // Simplified with optional chaining
   }, []);
 
   const handleNext = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slideNext();
+    sliderRef.current?.slideNext(); // Simplified with optional chaining
   }, []);
 
   return (
@@ -27,7 +26,7 @@ const Testimonials = () => {
       <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
         <div className="">
           <div className="swiper testimonial-carousel common-carousel p-5">
-            {/* <!-- section title --> */}
+            {/* Section title */}
             <div className="mb-10 flex items-center justify-between">
               <div>
                 <span className="flex items-center gap-2.5 font-medium text-dark mb-1.5">
@@ -45,7 +44,7 @@ const Testimonials = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div onClick={handlePrev} className="swiper-button-prev">
+                <button onClick={handlePrev} className="swiper-button-prev">
                   <svg
                     className="fill-current"
                     width="24"
@@ -61,9 +60,9 @@ const Testimonials = () => {
                       fill=""
                     />
                   </svg>
-                </div>
+                </button>
 
-                <div onClick={handleNext} className="swiper-button-next">
+                <button onClick={handleNext} className="swiper-button-next">
                   <svg
                     className="fill-current"
                     width="24"
@@ -79,27 +78,17 @@ const Testimonials = () => {
                       fill=""
                     />
                   </svg>
-                </div>
+                </button>
               </div>
             </div>
 
             <Swiper
-              ref={sliderRef}
+              onSwiper={(swiper) => (sliderRef.current = swiper)}
               slidesPerView={3}
-              spaceBetween={20}
               breakpoints={{
-                // when window width is >= 640px
-                0: {
-                  slidesPerView: 1,
-                },
-                1000: {
-                  slidesPerView: 2,
-                  // spaceBetween: 4,
-                },
-                // when window width is >= 768px
-                1200: {
-                  slidesPerView: 3,
-                },
+                0: { slidesPerView: 1 },
+                768: { slidesPerView: 2 },
+                1200: { slidesPerView: 3 },
               }}
             >
               {testimonialsData.map((item, key) => (
