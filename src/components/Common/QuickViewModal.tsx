@@ -4,11 +4,14 @@ import React, { useEffect, useState } from "react";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { addItemToCart } from "@/redux/features/cart-slice";
+import { addItemToWishlist } from "@/redux/features/wishlist-slice";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { resetQuickView } from "@/redux/features/quickView-slice";
 import { updateproductDetails } from "@/redux/features/product-details";
+import toast from 'react-hot-toast';
+import { addToRecentlyViewed } from "@/redux/features/recentlyViewed-slice";
 
 const QuickViewModal = () => {
   const { isModalOpen, closeModal } = useModalContext();
@@ -29,6 +32,17 @@ const QuickViewModal = () => {
     openPreviewModal();
   };
 
+  // add to wishlist
+  const handleAddToWishlist = () => {
+    dispatch(
+      addItemToWishlist({
+        ...product,
+        status: "available",
+        quantity: 1,
+      })
+    );
+  };
+
   // add to cart
   const handleAddToCart = () => {
     dispatch(
@@ -37,7 +51,7 @@ const QuickViewModal = () => {
         quantity,
       })
     );
-
+    toast.success('Added to cart');
     closeModal();
   };
 
@@ -59,6 +73,12 @@ const QuickViewModal = () => {
       setQuantity(1);
     };
   }, [isModalOpen, closeModal]);
+
+  useEffect(() => {
+    if (isModalOpen && product.id) {
+      dispatch(addToRecentlyViewed(product));
+    }
+  }, [isModalOpen, product, dispatch]);
 
   return (
     <div
@@ -392,16 +412,16 @@ const QuickViewModal = () => {
 
               <div className="flex flex-wrap items-center gap-4">
                 <button
-                  disabled={quantity === 0 && true}
-                  onClick={() => handleAddToCart()}
-                  className={`inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark
-                  `}
+                  disabled={quantity === 0}
+                  onClick={handleAddToCart}
+                  className={`inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark`}
                 >
                   Add to Cart
                 </button>
 
                 <button
-                  className={`inline-flex items-center gap-2 font-medium text-white bg-dark py-3 px-6 rounded-md ease-out duration-200 hover:bg-opacity-95 `}
+                  onClick={handleAddToWishlist}
+                  className={`inline-flex items-center gap-2 font-medium text-white bg-dark py-3 px-6 rounded-md ease-out duration-200 hover:bg-opacity-95`}
                 >
                   <svg
                     className="fill-current"

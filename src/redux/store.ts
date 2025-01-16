@@ -8,6 +8,7 @@ import cartReducer from "./features/cart-slice";
 import wishlistReducer from "./features/wishlist-slice";
 import productDetailsReducer from "./features/product-details";
 import authReducer from "./features/authSlice";
+import recentlyViewedReducer from "./features/recentlyViewed-slice";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 
 // Combine all reducers
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   wishlistReducer,
   productDetailsReducer,
   auth: authReducer,
+  recentlyViewedReducer,
 });
 
 // Configuration for redux-persist

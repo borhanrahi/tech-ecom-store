@@ -2,64 +2,58 @@ import { Testimonial } from "@/types/testimonial";
 
 const testimonialsData: Testimonial[] = [
   {
-    review: "The sound quality is exceptional and the comfort level is amazing. Best gaming headset I've ever owned!",
+    review: "The sound quality and comfort level are exceptional. Best gaming headset I've used in my 10 years of professional gaming.",
     authorName: "Michael Chen",
     authorImg: "/images/users/user-01.jpg",
     authorRole: "Pro Gamer",
   },
   {
-    review: "Great battery life and perfect for long gaming sessions. The mic quality is crystal clear.",
+    review: "Impressive battery life and crystal-clear mic quality. Perfect companion for my daily streaming sessions and competitive play.",
     authorName: "Sarah Williams",
     authorImg: "/images/users/user-02.jpg",
     authorRole: "Tech Reviewer",
   },
   {
-    review: "The build quality is outstanding and the wireless range is impressive. Highly recommended!",
+    review: "Outstanding build quality and remarkable wireless range. The perfect balance of durability and performance for intense gaming.",
     authorName: "James Rodriguez",
     authorImg: "/images/users/user-03.jpg",
     authorRole: "Gaming Streamer",
   },
   {
-    review: `Lorem ipsum dolor sit amet, adipiscing elit. Donec
-    malesuada justo vitaeaugue suscipit beautiful vehicula`,
-    authorName: "Davis Dorwart",
+    review: "Superior noise cancellation that keeps me focused during tournaments. The audio precision gives me a competitive advantage.",
+    authorName: "Emma Thompson",
     authorImg: "/images/users/user-01.jpg",
-    authorRole: "Serial Entrepreneur",
+    authorRole: "Competitive Gamer",
   },
   {
-    review: `Lorem ipsum dolor sit amet, adipiscing elit. Donec
-    malesuada justo vitaeaugue suscipit beautiful vehicula`,
-    authorName: "Wilson Dias",
+    review: "Seamless connectivity between devices and excellent sound staging. Makes content creation and gaming equally enjoyable.",
+    authorName: "Alex Rivera",
     authorImg: "/images/users/user-02.jpg",
-    authorRole: "Backend Developer",
+    authorRole: "Content Creator",
   },
   {
-    review: `Lorem ipsum dolor sit amet, adipiscing elit. Donec
-    malesuada justo vitaeaugue suscipit beautiful vehicula`,
-    authorName: "Miracle Exterm",
+    review: "Precise spatial audio that enhances gameplay awareness. The surround sound feature is a game-changer for competitive play.",
+    authorName: "Marcus Zhang",
     authorImg: "/images/users/user-03.jpg",
-    authorRole: "Serial Entrepreneur",
+    authorRole: "ESports Player",
   },
   {
-    review: `Lorem ipsum dolor sit amet, adipiscing elit. Donec
-    malesuada justo vitaeaugue suscipit beautiful vehicula`,
-    authorName: "Thomas Frank",
+    review: "Exceptional durability meets premium comfort. These headphones maintain perfect performance even after intense daily use.",
+    authorName: "Sophie Anderson",
     authorImg: "/images/users/user-01.jpg",
-    authorRole: "Entrepreneur",
+    authorRole: "Gaming Enthusiast",
   },
   {
-    review: `Lorem ipsum dolor sit amet, adipiscing elit. Donec
-    malesuada justo vitaeaugue suscipit beautiful vehicula`,
-    authorName: "Dave Smith",
+    review: "Versatile sound profiles and intuitive EQ customization. Delivers optimal audio experience across different gaming genres.",
+    authorName: "Ryan Parker",
     authorImg: "/images/users/user-02.jpg",
-    authorRole: "Serial Entrepreneur",
+    authorRole: "Audio Engineer",
   },
   {
-    review: `Lorem ipsum dolor sit amet, adipiscing elit. Donec
-    malesuada justo vitaeaugue suscipit beautiful vehicula`,
-    authorName: "Davis Dorwart",
+    review: "Memory foam ear cups and lightweight design make long gaming sessions comfortable. Perfect for professional tournaments.",
+    authorName: "Lisa Chen",
     authorImg: "/images/users/user-03.jpg",
-    authorRole: "Serial Entrepreneur",
+    authorRole: "Professional Gamer",
   },
 ];
 
