@@ -6,21 +6,20 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperType } from "swiper";
 import { useCallback, useRef } from "react";
 import "swiper/css/navigation";
 import "swiper/css";
 
 const RecentlyViewdItems = () => {
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<SwiperType | null>(null);
 
   const handlePrev = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slidePrev();
+    sliderRef.current?.slidePrev();
   }, []);
 
   const handleNext = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slideNext();
+    sliderRef.current?.slideNext();
   }, []);
 
   return (
@@ -84,7 +83,7 @@ const RecentlyViewdItems = () => {
           </div>
 
           <Swiper
-            ref={sliderRef}
+            onSwiper={(swiper) => (sliderRef.current = swiper)}
             slidesPerView={4}
             spaceBetween={20}
             className="justify-between"
