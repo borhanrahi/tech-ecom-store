@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import toast from 'react-hot-toast';
 
 type InitialState = {
   items: WishListItem[];
@@ -28,10 +29,12 @@ export const wishlist = createSlice({
     addItemToWishlist: (state, action: PayloadAction<WishListItem>) => {
       const { id, title, price, quantity, imgs, discountedPrice, status } =
         action.payload;
+      
       const existingItem = state.items.find((item) => item.id === id);
 
       if (existingItem) {
-        existingItem.quantity += quantity;
+        toast.error('This item is already in your wishlist');
+        return;
       } else {
         state.items.push({
           id,
@@ -42,11 +45,13 @@ export const wishlist = createSlice({
           discountedPrice,
           status,
         });
+        toast.success('Item added to wishlist');
       }
     },
     removeItemFromWishlist: (state, action: PayloadAction<number>) => {
       const itemId = action.payload;
       state.items = state.items.filter((item) => item.id !== itemId);
+      toast.success('Item removed from wishlist');
     },
 
     removeAllItemsFromWishlist: (state) => {

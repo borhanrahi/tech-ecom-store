@@ -1,32 +1,38 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { combineReducers } from "@reduxjs/toolkit";
 
 import quickViewReducer from "./features/quickView-slice";
 import cartReducer from "./features/cart-slice";
 import wishlistReducer from "./features/wishlist-slice";
 import productDetailsReducer from "./features/product-details";
 import authReducer from "./features/authSlice";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // Use localStorage
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 
-// Persist configuration
+// Combine all reducers
+const rootReducer = combineReducers({
+  quickViewReducer,
+  cartReducer,
+  wishlistReducer,
+  productDetailsReducer,
+  auth: authReducer,
+});
+
+// Configuration for redux-persist
 const persistConfig = {
-  key: "root", // Key to identify the persisted state
-  storage,     // Use localStorage
+  key: 'root',
+  storage,
+  whitelist: ['wishlistReducer', 'cartReducer'], // Only persist wishlist and cart
 };
 
-const persistedReducer = persistReducer(persistConfig, authReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 export const store = configureStore({
-  reducer: {
-    quickViewReducer,
-    cartReducer,
-    wishlistReducer,
-    productDetailsReducer,
-    auth: persistedReducer,
-  },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // Required for redux-persist
+      serializableCheck: false,
     }),
 });
 

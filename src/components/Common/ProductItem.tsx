@@ -10,6 +10,7 @@ import { updateproductDetails } from "@/redux/features/product-details";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import Link from "next/link";
+import toast from 'react-hot-toast';
 
 const ProductItem = ({ item }: { item: Product }) => {
   const { openModal } = useModalContext();

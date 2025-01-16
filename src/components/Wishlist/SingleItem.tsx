@@ -1,6 +1,7 @@
 import React from "react";
 import { AppDispatch } from "@/redux/store";
 import { useDispatch } from "react-redux";
+import toast from 'react-hot-toast';
 
 import { removeItemFromWishlist } from "@/redux/features/wishlist-slice";
 import { addItemToCart } from "@/redux/features/cart-slice";
@@ -12,6 +13,7 @@ const SingleItem = ({ item }) => {
 
   const handleRemoveFromWishlist = () => {
     dispatch(removeItemFromWishlist(item.id));
+    toast.success('Removed from wishlist');
   };
 
   const handleAddToCart = () => {
@@ -21,6 +23,7 @@ const SingleItem = ({ item }) => {
         quantity: 1,
       })
     );
+    toast.success('Item added to cart');
   };
 
   return (
