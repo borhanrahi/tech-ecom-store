@@ -2,12 +2,18 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import Image from "next/image";
-
+import { updateCartItemQuantity } from "@/redux/features/cart-slice";
 const SingleItem = ({ item, removeItemFromCart }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleRemoveFromCart = () => {
     dispatch(removeItemFromCart(item.id));
+  };
+
+  const handleUpdateQuantity = (newQuantity: number) => {
+    if (newQuantity > 0) {
+      dispatch(updateCartItemQuantity({ id: item.id, quantity: newQuantity }));
+    }
   };
 
   return (
@@ -22,6 +28,24 @@ const SingleItem = ({ item, removeItemFromCart }) => {
             <a href="#"> {item.title} </a>
           </h3>
           <p className="text-custom-sm">Price: ${item.discountedPrice}</p>
+          
+          <div className="flex items-center gap-2 mt-2">
+            <button
+              onClick={() => handleUpdateQuantity(item.quantity - 1)}
+              className="flex items-center justify-center w-6 h-6 rounded bg-gray-2 text-dark hover:bg-blue hover:text-white transition-colors"
+              aria-label="Decrease quantity"
+            >
+              -
+            </button>
+            <span className="text-custom-sm min-w-[20px] text-center">{item.quantity}</span>
+            <button
+              onClick={() => handleUpdateQuantity(item.quantity + 1)}
+              className="flex items-center justify-center w-6 h-6 rounded bg-gray-2 text-dark hover:bg-blue hover:text-white transition-colors"
+              aria-label="Increase quantity"
+            >
+              +
+            </button>
+          </div>
         </div>
       </div>
 

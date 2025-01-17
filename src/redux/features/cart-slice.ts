@@ -1,5 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
+import toast from 'react-hot-toast';
 
 type InitialState = {
   items: CartItem[];
@@ -32,6 +33,7 @@ export const cart = createSlice({
 
       if (existingItem) {
         existingItem.quantity += quantity;
+        toast.success('Cart quantity updated');
       } else {
         state.items.push({
           id,
@@ -41,11 +43,13 @@ export const cart = createSlice({
           discountedPrice,
           imgs,
         });
+        toast.success('Added to cart');
       }
     },
     removeItemFromCart: (state, action: PayloadAction<number>) => {
       const itemId = action.payload;
       state.items = state.items.filter((item) => item.id !== itemId);
+      toast.error('Item removed from cart');
     },
     updateCartItemQuantity: (
       state,
@@ -56,11 +60,17 @@ export const cart = createSlice({
 
       if (existingItem) {
         existingItem.quantity = quantity;
+        toast.success('Cart quantity updated');
       }
     },
 
     removeAllItemsFromCart: (state) => {
+      if (state.items.length === 0) {
+        toast.error('Cart is already empty');
+        return;
+      }
       state.items = [];
+      toast.success('Cart cleared successfully');
     },
   },
 });
