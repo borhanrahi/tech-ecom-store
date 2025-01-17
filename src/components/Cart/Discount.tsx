@@ -13,7 +13,6 @@ const Discount = () => {
     e.stopPropagation();
     
     if (couponCode.trim()) {
-      console.log('Applying promo code:', couponCode);
       dispatch(applyPromoCode(couponCode));
       setCouponCode("");
     }

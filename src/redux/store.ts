@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import { combineReducers } from "@reduxjs/toolkit";
-import { TypedUseSelectorHook, useSelector } from "react-redux";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import quickViewReducer from "./features/quickView-slice";
 import cartReducer from "./features/cart-slice";
@@ -59,5 +59,6 @@ export const store = configureStore({
 });
 
 export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export const persistor = persistStore(store);
