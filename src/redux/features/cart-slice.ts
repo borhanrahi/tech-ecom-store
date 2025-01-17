@@ -77,11 +77,22 @@ export const cart = createSlice({
 
 export const selectCartItems = (state: RootState) => state.cartReducer.items;
 
-export const selectTotalPrice = createSelector([selectCartItems], (items) => {
-  return items.reduce((total, item) => {
-    return total + item.discountedPrice * item.quantity;
-  }, 0);
-});
+export const selectTotalPrice = createSelector(
+  [selectCartItems, (state: RootState) => state.promoReducer.appliedPromo],
+  (items, appliedPromo) => {
+    const subtotal = items.reduce((total, item) => {
+      return total + item.discountedPrice * item.quantity;
+    }, 0);
+
+    if (!appliedPromo) return subtotal;
+
+    const discount = appliedPromo.type === 'percentage' 
+      ? (subtotal * appliedPromo.value) / 100 
+      : appliedPromo.value;
+
+    return Math.max(subtotal - discount, 0);
+  }
+);
 
 export const {
   addItemToCart,

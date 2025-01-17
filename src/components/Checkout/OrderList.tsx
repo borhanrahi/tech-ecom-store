@@ -7,11 +7,26 @@ import {
   removeItemFromCart, 
   selectTotalPrice 
 } from "@/redux/features/cart-slice";
+import { selectAppliedPromo } from "@/redux/features/promo-slice";
 
 const OrderList = () => {
   const dispatch = useDispatch();
   const cartItems = useAppSelector((state) => state.cartReducer.items);
   const totalPrice = useAppSelector(selectTotalPrice);
+  const appliedPromo = useAppSelector(selectAppliedPromo);
+
+  const calculateDiscount = () => {
+    if (!appliedPromo) return 0;
+    
+    if (appliedPromo.type === 'percentage') {
+      return (totalPrice * appliedPromo.value) / 100;
+    }
+    return appliedPromo.value;
+  };
+
+  const discount = calculateDiscount();
+  const shippingFee = 15;
+  const finalTotal = totalPrice - discount + shippingFee;
 
   const handleUpdateQuantity = (e: React.MouseEvent, id: number, quantity: number) => {
     e.preventDefault();
@@ -110,6 +125,18 @@ const OrderList = () => {
               </div>
             </div>
 
+            {/* <!-- discount --> */}
+            {appliedPromo && (
+              <div className="flex items-center justify-between py-5 border-b border-gray-3">
+                <div>
+                  <p className="text-dark">Discount ({appliedPromo.code})</p>
+                </div>
+                <div>
+                  <p className="text-dark text-right text-green-600">-${discount.toFixed(2)}</p>
+                </div>
+              </div>
+            )}
+
             {/* <!-- total --> */}
             <div className="flex items-center justify-between pt-5">
               <div>
@@ -117,7 +144,7 @@ const OrderList = () => {
               </div>
               <div>
                 <p className="font-medium text-lg text-dark text-right">
-                  ${(totalPrice + 15).toFixed(2)}
+                  ${finalTotal.toFixed(2)}
                 </p>
               </div>
             </div>

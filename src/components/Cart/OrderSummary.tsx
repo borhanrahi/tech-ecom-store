@@ -1,11 +1,29 @@
 import { selectTotalPrice } from "@/redux/features/cart-slice";
-import { useAppSelector } from "@/redux/store";
-import React from "react";
 import { useSelector } from "react-redux";
+import { selectAppliedPromo } from "@/redux/features/promo-slice";
+import React from "react";
+import { RootState } from "@/redux/store";
 
 const OrderSummary = () => {
-  const cartItems = useAppSelector((state) => state.cartReducer.items);
+  const cartItems = useSelector((state: RootState) => state.cartReducer.items);
   const totalPrice = useSelector(selectTotalPrice);
+  const appliedPromo = useSelector(selectAppliedPromo);
+
+  const calculateDiscount = () => {
+    if (!appliedPromo) return 0;
+    const subtotal = cartItems.reduce((total, item) => 
+      total + item.discountedPrice * item.quantity, 0
+    );
+    return appliedPromo.type === 'percentage' 
+      ? (subtotal * appliedPromo.value) / 100 
+      : appliedPromo.value;
+  };
+
+  const discount = calculateDiscount();
+  const subtotal = cartItems.reduce((total, item) => 
+    total + item.discountedPrice * item.quantity, 0
+  );
+  const finalTotal = subtotal - discount;
 
   return (
     <div className="lg:max-w-[455px] w-full">
@@ -40,6 +58,22 @@ const OrderSummary = () => {
             </div>
           ))}
 
+          {/* <!-- discount --> */}
+          {appliedPromo && (
+            <div className="flex items-center justify-between py-5 border-b border-gray-3">
+              <div>
+                <p className="text-dark">
+                  Discount ({appliedPromo.code})
+                </p>
+              </div>
+              <div>
+                <p className="text-dark text-right text-green-600">
+                  -${discount.toFixed(2)}
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* <!-- total --> */}
           <div className="flex items-center justify-between pt-5">
             <div>
@@ -47,7 +81,7 @@ const OrderSummary = () => {
             </div>
             <div>
               <p className="font-medium text-lg text-dark text-right">
-                ${totalPrice}
+                ${finalTotal.toFixed(2)}
               </p>
             </div>
           </div>
