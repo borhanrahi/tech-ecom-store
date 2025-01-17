@@ -1,6 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
+import { countries } from 'countries-list';
 
 const Billing = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState("");
+
+  const countriesList = Object.entries(countries).map(([code, country]) => ({
+    code,
+    name: country.name,
+  })).sort((a, b) => a.name.localeCompare(b.name));
+
+  const filteredCountries = countriesList.filter(country =>
+    country.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleCountrySelect = (code: string, name: string) => {
+    setSelectedCountry(name);
+    setSearchTerm(name);
+    setShowDropdown(false);
+  };
+
   return (
     <div className="mt-9">
       <h2 className="font-medium text-dark text-xl sm:text-2xl mb-5.5">
@@ -58,11 +78,37 @@ const Billing = () => {
           </label>
 
           <div className="relative">
-            <select className="w-full bg-gray-1 rounded-md border border-gray-3 text-dark-4 py-3 pl-5 pr-9 duration-200 appearance-none outline-none focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20">
-              <option value="0">Australia</option>
-              <option value="1">America</option>
-              <option value="2">England</option>
-            </select>
+            <input
+              type="text"
+              id="countryName"
+              name="countryName"
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setShowDropdown(true);
+              }}
+              onFocus={() => setShowDropdown(true)}
+              placeholder="Type to search country"
+              className="w-full bg-gray-1 rounded-md border border-gray-3 text-dark-4 py-3 pl-5 pr-9 duration-200 outline-none focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+            />
+
+            {showDropdown && searchTerm && (
+              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-3 rounded-md shadow-lg max-h-60 overflow-auto">
+                {filteredCountries.length > 0 ? (
+                  filteredCountries.map(({ code, name }) => (
+                    <div
+                      key={code}
+                      onClick={() => handleCountrySelect(code, name)}
+                      className="px-4 py-2 cursor-pointer hover:bg-gray-1 text-dark-4"
+                    >
+                      {name}
+                    </div>
+                  ))
+                ) : (
+                  <div className="px-4 py-2 text-gray-500">No countries found</div>
+                )}
+              </div>
+            )}
 
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-dark-4">
               <svg
@@ -77,7 +123,7 @@ const Billing = () => {
                   d="M2.41469 5.03569L2.41467 5.03571L2.41749 5.03846L7.76749 10.2635L8.0015 10.492L8.23442 10.2623L13.5844 4.98735L13.5844 4.98735L13.5861 4.98569C13.6809 4.89086 13.8199 4.89087 13.9147 4.98569C14.0092 5.08024 14.0095 5.21864 13.9155 5.31345C13.9152 5.31373 13.915 5.31401 13.9147 5.31429L8.16676 10.9622L8.16676 10.9622L8.16469 10.9643C8.06838 11.0606 8.02352 11.0667 8.00039 11.0667C7.94147 11.0667 7.89042 11.0522 7.82064 10.9991L2.08526 5.36345C1.99127 5.26865 1.99154 5.13024 2.08609 5.03569C2.18092 4.94086 2.31986 4.94086 2.41469 5.03569Z"
                   fill=""
                   stroke=""
-                  stroke-width="0.666667"
+                  strokeWidth="0.666667"
                 />
               </svg>
             </span>
