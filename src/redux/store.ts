@@ -38,7 +38,7 @@ const rootReducer = combineReducers({
   productDetailsReducer,
   auth: authReducer,
   recentlyViewedReducer,
-  promoReducer,
+  promo: promoReducer,
 });
 
 // Configuration for redux-persist

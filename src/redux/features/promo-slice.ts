@@ -45,6 +45,6 @@ const promoSlice = createSlice({
   }
 });
 
-export const selectAppliedPromo = (state: RootState) => state.promoReducer.appliedPromo;
+export const selectAppliedPromo = (state: RootState) => state.promo.appliedPromo;
 export const { applyPromoCode, removePromoCode } = promoSlice.actions;
 export default promoSlice.reducer; 

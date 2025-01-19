@@ -1,98 +1,56 @@
-import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useSelector } from "react-redux";
-import { selectAppliedPromo } from "@/redux/features/promo-slice";
-import React from "react";
 import { RootState } from "@/redux/store";
+import { selectAppliedPromo } from "@/redux/features/promo-slice";
 
 const OrderSummary = () => {
   const cartItems = useSelector((state: RootState) => state.cartReducer.items);
-  const totalPrice = useSelector(selectTotalPrice);
   const appliedPromo = useSelector(selectAppliedPromo);
+
+  const calculateSubtotal = () => {
+    return cartItems.reduce((total, item) => 
+      total + (item.discountedPrice * item.quantity), 0
+    );
+  };
 
   const calculateDiscount = () => {
     if (!appliedPromo) return 0;
-    const subtotal = cartItems.reduce((total, item) => 
-      total + item.discountedPrice * item.quantity, 0
-    );
+    const subtotal = calculateSubtotal();
+    
     return appliedPromo.type === 'percentage' 
       ? (subtotal * appliedPromo.value) / 100 
-      : appliedPromo.value;
+      : Math.min(appliedPromo.value, subtotal);
   };
 
+  const subtotal = calculateSubtotal();
   const discount = calculateDiscount();
-  const subtotal = cartItems.reduce((total, item) => 
-    total + item.discountedPrice * item.quantity, 0
-  );
-  const finalTotal = subtotal - discount;
+  const finalTotal = Math.max(subtotal - discount, 0);
 
   return (
-    <div className="lg:max-w-[455px] w-full">
-      {/* <!-- order list box --> */}
-      <div className="bg-white shadow-1 rounded-[10px]">
-        <div className="border-b border-gray-3 py-5 px-4 sm:px-8.5">
-          <h3 className="font-medium text-xl text-dark">Order Summary</h3>
-        </div>
+    <div className="bg-white shadow-1 rounded-[10px]">
+      <div className="border-b border-gray-3 py-5 px-8">
+        <h3 className="font-medium text-xl text-dark">Order Summary</h3>
+      </div>
 
-        <div className="pt-2.5 pb-8.5 px-4 sm:px-8.5">
-          {/* <!-- title --> */}
-          <div className="flex items-center justify-between py-5 border-b border-gray-3">
-            <div>
-              <h4 className="font-medium text-dark">Product</h4>
-            </div>
-            <div>
-              <h4 className="font-medium text-dark text-right">Subtotal</h4>
-            </div>
+      <div className="p-8">
+        <div className="space-y-4">
+          <div className="flex justify-between">
+            <span className="text-dark">Subtotal:</span>
+            <span className="font-medium">${subtotal.toFixed(2)}</span>
           </div>
 
-          {/* <!-- product item --> */}
-          {cartItems.map((item, key) => (
-            <div key={key} className="flex items-center justify-between py-5 border-b border-gray-3">
-              <div>
-                <p className="text-dark">{item.title}</p>
-              </div>
-              <div>
-                <p className="text-dark text-right">
-                  ${item.discountedPrice * item.quantity}
-                </p>
-              </div>
-            </div>
-          ))}
-
-          {/* <!-- discount --> */}
           {appliedPromo && (
-            <div className="flex items-center justify-between py-5 border-b border-gray-3">
-              <div>
-                <p className="text-dark">
-                  Discount ({appliedPromo.code})
-                </p>
-              </div>
-              <div>
-                <p className="text-dark text-right text-green-600">
-                  -${discount.toFixed(2)}
-                </p>
-              </div>
+            <div className="flex justify-between text-green-600">
+              <span>Discount ({appliedPromo.code}):</span>
+              <span>-${discount.toFixed(2)}</span>
             </div>
           )}
 
-          {/* <!-- total --> */}
-          <div className="flex items-center justify-between pt-5">
-            <div>
-              <p className="font-medium text-lg text-dark">Total</p>
-            </div>
-            <div>
-              <p className="font-medium text-lg text-dark text-right">
-                ${finalTotal.toFixed(2)}
-              </p>
-            </div>
+          <div className="flex justify-between border-t pt-4">
+            <span className="text-dark font-medium">Total:</span>
+            <span className="font-medium text-lg text-blue">
+              ${finalTotal.toFixed(2)}
+            </span>
           </div>
-
-          {/* <!-- checkout button --> */}
-          <button
-            type="submit"
-            className="w-full flex justify-center font-medium text-white bg-blue py-3 px-6 rounded-md ease-out duration-200 hover:bg-blue-dark mt-7.5"
-          >
-            Process to Checkout
-          </button>
         </div>
       </div>
     </div>
