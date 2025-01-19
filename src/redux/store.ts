@@ -9,6 +9,7 @@ import productDetailsReducer from "./features/product-details";
 import authReducer from "./features/authSlice";
 import recentlyViewedReducer from "./features/recentlyViewed-slice";
 import promoReducer from './features/promo-slice';
+import checkoutReducer from './features/checkout-slice';
 
 // Create a noop storage
 const createNoopStorage = () => {
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   recentlyViewedReducer,
   promo: promoReducer,
+  checkout: checkoutReducer,
 });
 
 // Configuration for redux-persist

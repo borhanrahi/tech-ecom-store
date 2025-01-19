@@ -14,6 +14,7 @@ const OrderList = () => {
   const cartItems = useAppSelector((state) => state.cart.items);
   const totalPrice = useAppSelector(selectTotalPrice);
   const appliedPromo = useAppSelector(selectAppliedPromo);
+  const shippingMethod = useAppSelector((state) => state.checkout.shippingMethod);
 
   const calculateDiscount = () => {
     if (!appliedPromo) return 0;
@@ -25,7 +26,7 @@ const OrderList = () => {
   };
 
   const discount = calculateDiscount();
-  const shippingFee = 15;
+  const shippingFee = shippingMethod.price;
   const finalTotal = totalPrice - discount + shippingFee;
 
   const handleUpdateQuantity = (e: React.MouseEvent, id: number, quantity: number) => {
@@ -121,7 +122,9 @@ const OrderList = () => {
                 <p className="text-dark">Shipping Fee</p>
               </div>
               <div>
-                <p className="text-dark text-right">$15.00</p>
+                <p className="text-dark text-right">
+                  ${shippingMethod.price.toFixed(2)}
+                </p>
               </div>
             </div>
 
