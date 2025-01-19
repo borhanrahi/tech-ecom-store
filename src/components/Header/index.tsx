@@ -167,9 +167,9 @@ const Header = () => {
                 <span className="block text-2xs text-dark-4 uppercase">
                   24/7 SUPPORT
                 </span>
-                <p className="font-medium text-custom-sm text-dark">
-                  (+965) 7492-3477
-                </p>
+                <p className="font-medium text-[12px] text-dark">
+  (+965) 7492-3477
+</p>
               </div>
               )}
 
