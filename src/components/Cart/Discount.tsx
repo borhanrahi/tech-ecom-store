@@ -22,7 +22,8 @@ const Discount = () => {
 
   return (
     <div className="bg-white shadow-1 rounded-[10px] p-5">
-      <h3 className="font-medium text-dark text-lg mb-4">Have a coupon?</h3>
+      <h3 className="font-medium text-dark text-lg mb-2">Have a coupon?</h3>
+      
       <form onSubmit={handleSubmit} className="flex gap-4">
         <input
           type="text"

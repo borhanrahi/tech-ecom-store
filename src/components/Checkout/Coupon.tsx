@@ -46,8 +46,14 @@ const Coupon = () => {
           >
             Apply
           </button>
+          
         </div>
-
+        <div className="mt-4">
+          <p className="text-sm text-gray-500 mb-4">
+            Use code: <span className="font-bold text-blue">SAVE20</span> for 20% off or{" "}
+            <span className="font-bold text-blue">FLAT50</span> for $50 off
+          </p>
+        </div>
         {appliedPromo && (
           <div className="mt-4 flex items-center justify-between bg-gray-50 p-3 rounded-md">
             <div>

@@ -40,7 +40,12 @@ const promoSlice = createSlice({
     },
     removePromoCode: (state) => {
       state.appliedPromo = null;
-      toast.success('Promo code removed');
+      toast.error('Promo code removed', {
+        style: {
+          background: '#EF4444',
+          color: '#fff',
+        },
+      });
     }
   }
 });
