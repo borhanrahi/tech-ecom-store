@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { applyPromoCode, removePromoCode, selectAppliedPromo } from "@/redux/features/promo-slice";
@@ -7,15 +8,19 @@ const Coupon = () => {
   const dispatch = useDispatch();
   const appliedPromo = useSelector(selectAppliedPromo);
 
-  const handleApplyPromo = (e: React.FormEvent) => {
+  const handleApplyClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    e.stopPropagation();
+    
     if (couponCode.trim()) {
-      dispatch(applyPromoCode(couponCode));
+      dispatch(applyPromoCode(couponCode.trim()));
       setCouponCode("");
     }
   };
 
-  const handleRemovePromo = () => {
+  const handleRemoveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     dispatch(removePromoCode());
   };
 
@@ -26,24 +31,22 @@ const Coupon = () => {
       </div>
 
       <div className="py-8 px-4 sm:px-8.5">
-        <form onSubmit={handleApplyPromo}>
-          <div className="flex gap-4">
-            <input
-              type="text"
-              value={couponCode}
-              onChange={(e) => setCouponCode(e.target.value)}
-              placeholder="Enter coupon code"
-              className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
-            />
-
-            <button
-              type="submit"
-              className="inline-flex font-medium text-white bg-blue py-3 px-6 rounded-md ease-out duration-200 hover:bg-blue-dark"
-            >
-              Apply
-            </button>
-          </div>
-        </form>
+        <div className="flex gap-4">
+          <input
+            type="text"
+            value={couponCode}
+            onChange={(e) => setCouponCode(e.target.value)}
+            placeholder="Enter coupon code"
+            className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+          />
+          <button
+            onClick={handleApplyClick}
+            type="button"
+            className="inline-flex font-medium text-white bg-blue py-3 px-6 rounded-md ease-out duration-200 hover:bg-blue-dark"
+          >
+            Apply
+          </button>
+        </div>
 
         {appliedPromo && (
           <div className="mt-4 flex items-center justify-between bg-gray-50 p-3 rounded-md">
@@ -55,7 +58,8 @@ const Coupon = () => {
               </span>
             </div>
             <button
-              onClick={handleRemovePromo}
+              onClick={handleRemoveClick}
+              type="button"
               className="text-red-500 hover:text-red-700 text-sm"
             >
               Remove

@@ -1,6 +1,5 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
-import { combineReducers } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { persistReducer, persistStore } from 'redux-persist';
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import quickViewReducer from "./features/quickView-slice";
@@ -26,14 +25,15 @@ const createNoopStorage = () => {
   };
 };
 
-const storage = typeof window !== 'undefined'
+// Initialize storage based on environment
+const storageSystem = typeof window !== 'undefined'
   ? require('redux-persist/lib/storage').default
   : createNoopStorage();
 
 // Combine all reducers
 const rootReducer = combineReducers({
   quickViewReducer,
-  cartReducer,
+  cart: cartReducer,
   wishlistReducer,
   productDetailsReducer,
   auth: authReducer,
@@ -44,8 +44,8 @@ const rootReducer = combineReducers({
 // Configuration for redux-persist
 const persistConfig = {
   key: 'root',
-  storage,
-  whitelist: ['wishlistReducer', 'cartReducer', 'promoReducer'], // Added promoReducer
+  storage: storageSystem,
+  whitelist: ['cart', 'promo'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

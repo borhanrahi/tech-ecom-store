@@ -36,9 +36,9 @@ const Header = () => {
     }
   };
 
-  const product = useAppSelector((state) => state.cartReducer.items);
+  const cartItems = useAppSelector((state) => state.cart.items);
   const totalPrice = useSelector(selectTotalPrice);
-  const totalItems = product.reduce((total, item) => total + item.quantity, 0);
+  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   const handleOpenCartModal = () => {
     openCartModal();

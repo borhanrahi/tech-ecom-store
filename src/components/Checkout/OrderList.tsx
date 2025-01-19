@@ -11,7 +11,7 @@ import { selectAppliedPromo } from "@/redux/features/promo-slice";
 
 const OrderList = () => {
   const dispatch = useDispatch();
-  const cartItems = useAppSelector((state) => state.cartReducer.items);
+  const cartItems = useAppSelector((state) => state.cart.items);
   const totalPrice = useAppSelector(selectTotalPrice);
   const appliedPromo = useAppSelector(selectAppliedPromo);
 

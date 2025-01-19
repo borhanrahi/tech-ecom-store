@@ -14,7 +14,7 @@ import EmptyCart from "./EmptyCart";
 
 const CartSidebarModal = () => {
   const { isCartModalOpen, closeCartModal } = useCartModalContext();
-  const cartItems = useAppSelector((state) => state.cartReducer.items);
+  const cartItems = useAppSelector((state) => state.cart.items);
 
   const totalPrice = useSelector(selectTotalPrice);
 

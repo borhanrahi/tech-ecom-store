@@ -3,7 +3,7 @@ import { RootState } from "@/redux/store";
 import { selectAppliedPromo } from "@/redux/features/promo-slice";
 
 const OrderSummary = () => {
-  const cartItems = useSelector((state: RootState) => state.cartReducer.items);
+  const cartItems = useSelector((state: RootState) => state.cart.items);
   const appliedPromo = useSelector(selectAppliedPromo);
 
   const calculateSubtotal = () => {
