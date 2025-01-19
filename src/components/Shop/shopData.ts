@@ -1,10 +1,10 @@
 import { Product } from "@/types/product";
 const shopData: Product[] = [
   {
-    title: "Havit HV-G69 USB Gamepad",
-    reviews: 15,
-    price: 59.0,
-    discountedPrice: 29.0,
+    title: "iPhone 15 Pro Max - 256GB",
+    reviews: 127,
+    price: 1199.99,
+    discountedPrice: 1099.99,
     id: 1,
     imgs: {
       thumbnails: [
@@ -18,10 +18,10 @@ const shopData: Product[] = [
     },
   },
   {
-    title: "iPhone 14 Plus , 6/128GB",
-    reviews: 5,
-    price: 899.0,
-    discountedPrice: 99.0,
+    title: "Sony WH-1000XM5 Wireless Headphones",
+    reviews: 89,
+    price: 399.99,
+    discountedPrice: 349.99,
     id: 2,
     imgs: {
       thumbnails: [
@@ -35,10 +35,10 @@ const shopData: Product[] = [
     },
   },
   {
-    title: "Apple iMac M1 24-inch 2021",
-    reviews: 5,
-    price: 59.0,
-    discountedPrice: 29.0,
+    title: "AirPods Pro (2nd Generation)",
+    reviews: 245,
+    price: 249.99,
+    discountedPrice: 249.99,
     id: 3,
     imgs: {
       thumbnails: [
@@ -52,10 +52,10 @@ const shopData: Product[] = [
     },
   },
   {
-    title: "MacBook Air M1 chip, 8/256GB",
-    reviews: 6,
-    price: 59.0,
-    discountedPrice: 29.0,
+    title: "MacBook Air M2 chip, 8/256GB",
+    reviews: 156,
+    price: 1299.99,
+    discountedPrice: 1299.99,
     id: 4,
     imgs: {
       thumbnails: [
@@ -69,10 +69,10 @@ const shopData: Product[] = [
     },
   },
   {
-    title: "Apple Watch Ultra",
-    reviews: 3,
-    price: 99.0,
-    discountedPrice: 29.0,
+    title: "Apple Watch Series 9",
+    reviews: 183,
+    price: 399.99,
+    discountedPrice: 399.99,
     id: 5,
     imgs: {
       thumbnails: [
@@ -86,10 +86,10 @@ const shopData: Product[] = [
     },
   },
   {
-    title: "Logitech MX Master 3 Mouse",
-    reviews: 15,
-    price: 59.0,
-    discountedPrice: 29.0,
+    title: "Logitech MX Master 3S Mouse",
+    reviews: 285,
+    price: 99.99,
+    discountedPrice: 99.99,
     id: 6,
     imgs: {
       thumbnails: [
@@ -103,10 +103,10 @@ const shopData: Product[] = [
     },
   },
   {
-    title: "Apple iPad Air 5th Gen - 64GB",
-    reviews: 15,
-    price: 59.0,
-    discountedPrice: 29.0,
+    title: "iPad Air 5th Gen - 256GB",
+    reviews: 145,
+    price: 749.99,
+    discountedPrice: 749.99,
     id: 7,
     imgs: {
       thumbnails: [
@@ -122,8 +122,8 @@ const shopData: Product[] = [
   {
     title: "Asus RT Dual Band Router",
     reviews: 15,
-    price: 59.0,
-    discountedPrice: 29.0,
+    price: 79.0,
+    discountedPrice: 59.0,
     id: 8,
     imgs: {
       thumbnails: [
