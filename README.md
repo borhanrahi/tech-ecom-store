@@ -1,4 +1,4 @@
-# Tech Ecom Store
+Tech Ecom Store
 
 [![Next.js](https://img.shields.io/badge/Next.js-14.2.14-000000?logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-18.2.0-61DAFB?logo=react)](https://reactjs.org/)
