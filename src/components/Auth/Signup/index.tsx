@@ -9,6 +9,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import RedirectIfAuthenticated from "../RedirectIfAuthenticated";
 import { account, ID } from '@/lib/appwrite';
+import PasswordInput from "../PasswordInput";
 
 const Signup = () => {
   const router = useRouter();
@@ -185,16 +186,13 @@ const Signup = () => {
                     <label htmlFor="password" className="block mb-2.5">
                       Password <span className="text-red">*</span>
                     </label>
-
-                    <input
-                      type="password"
-                      name="password"
+                    <PasswordInput
                       id="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Enter your password"
-                      autoComplete="on"
                       className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                      required
                     />
                   </div>
 
@@ -202,16 +200,13 @@ const Signup = () => {
                     <label htmlFor="re-type-password" className="block mb-2.5">
                       Re-type Password <span className="text-red">*</span>
                     </label>
-
-                    <input
-                      type="password"
-                      name="re-type-password"
+                    <PasswordInput
                       id="re-type-password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Re-type your password"
-                      autoComplete="on"
                       className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                      required
                     />
                   </div>
                   {error && (

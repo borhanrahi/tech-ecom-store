@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { login } from "@/redux/features/authSlice";
 import RedirectIfAuthenticated from "../RedirectIfAuthenticated";
 import { account } from '@/lib/appwrite';
+import PasswordInput from "../PasswordInput";
 
 const Signin = () => {
   const router = useRouter();
@@ -86,15 +87,11 @@ const Signin = () => {
                     <label htmlFor="password" className="block mb-2.5">
                       Password
                     </label>
-
-                    <input
-                      type="password"
-                      name="password"
+                    <PasswordInput
                       id="password"
-                      placeholder="Enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      autoComplete="on"
+                      placeholder="Enter your password"
                       className="rounded-lg border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-3 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
                     />
                   </div>
