@@ -11,6 +11,8 @@ import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
 import Image from "next/image";
 import logo from "./../../../public/images/logo/ecom-store.png"
 import { logout } from "@/redux/features/authSlice";
+import { account } from "@/lib/appwrite";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,20 +21,15 @@ const Header = () => {
   const { openCartModal } = useCartModalContext();
   const { isAuthenticated, user } = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("/api/auth/logout", { method: "POST" });
-
-      if (response.ok) {
-        dispatch(logout());
-        alert("You have been logged out successfully.");
-      } else {
-        const error = await response.json();
-        console.error("Logout failed:", error.message);
-      }
-    } catch (err) {
-      console.error("Something went wrong during logout:", err);
+      await account.deleteSession('current');
+      dispatch(logout());
+      router.push('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
     }
   };
 
@@ -226,19 +223,6 @@ const Header = () => {
                 <div className="hidden xl:flex items-center gap-3.5">
 
                   {isAuthenticated && (
-                    // <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
-                    //   <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                    //     Logout
-                    //   </span>
-                    // </button>
-                    // <div className="flex items-center gap-4">
-                    //   <p
-                    //     onClick={handleLogout}
-                    //     className="font-medium text-custom-sm hover:bg-blue-400 text-dark rounded-md">
-                    //     Logout
-                    //   </p>
-                    // </div>
-
                     <button
                       onClick={handleLogout}
                       className="inline-flex font-medium text-white text-custom-sm rounded-md bg-dark py-3 px-9 ease-out duration-200 hover:bg-blue"

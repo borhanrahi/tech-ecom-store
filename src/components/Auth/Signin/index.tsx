@@ -8,64 +8,47 @@ import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { login } from "@/redux/features/authSlice";
 import RedirectIfAuthenticated from "../RedirectIfAuthenticated";
+import { account } from '@/lib/appwrite';
 
 const Signin = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false); // To handle loading state
-  const router = useRouter();
-  const dispatch = useDispatch(); // Redux dispatcher
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleSignin = async (e) => {
-    e.preventDefault(); // Prevent page reload
-    setError(""); // Clear previous errors
-    setSuccess(""); // Clear previous success messages
-    setLoading(true); // Show loading indicator
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      // Create session
+      await account.createEmailPasswordSession(email, password);
+      
+      // Get current user
+      const user = await account.get();
+
+      dispatch(login({
+        user: {
+          id: user.$id,
+          name: user.name,
+          email: user.email
         },
-        body: JSON.stringify({ email, password }),
-      });
+        accessToken: "appwrite-session"
+      }));
 
-      if (response.ok) {
-        const data = await response.json();
-        dispatch(
-          login({
-            user: data.user,
-            accessToken: data.accessToken,
-          })
-        )
-        setSuccess("Login successful!");
-        setError(""); // Clear error messages
-        setLoading(false); // Stop loading
-
-        if (data.email == "admin@gmail.com") {
-          router.push("/admin");
-        }
-
-        // Redirect to the dashboard after a short delay
-        setTimeout(() => {
-          router.push("/");
-        }, 10);
-      } else {
-        const err = await response.json();
-        setError(err.message || "Failed to login");
-        setSuccess(""); // Clear success messages
-        setLoading(false); // Stop loading
-      }
+      setSuccess("Login successful!");
+      router.push("/");
     } catch (error) {
-      setError("Something went wrong. Please try again.");
-      setSuccess(""); // Clear success messages
-      setLoading(false); // Stop loading
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
-
 
   return (
     <>

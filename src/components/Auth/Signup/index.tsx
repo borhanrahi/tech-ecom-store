@@ -8,8 +8,10 @@ import { useState } from "react";
 import React from "react";
 import { useDispatch } from "react-redux";
 import RedirectIfAuthenticated from "../RedirectIfAuthenticated";
+import { account, ID } from '@/lib/appwrite';
 
 const Signup = () => {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,15 +19,12 @@ const Signup = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch(); // Redux dispatcher
-
-
-  const router = useRouter(); // Initialize useRouter for navigation
+  const dispatch = useDispatch();
 
   const handleSignup = async (e) => {
-    e.preventDefault(); // Prevent the default form submission
-    setError(""); // Clear previous error messages
-    setSuccess(""); // Clear previous success messages
+    e.preventDefault();
+    setError("");
+    setSuccess("");
     setLoading(true);
 
     if (password !== confirmPassword) {
@@ -35,47 +34,31 @@ const Signup = () => {
     }
 
     try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      // Create Appwrite account
+      const user = await account.create(
+        ID.unique(),
+        email,
+        password,
+        name
+      );
+
+      // Create session
+      await account.createEmailPasswordSession(email, password);
+
+      dispatch(login({
+        user: {
+          id: user.$id,
+          name: user.name,
+          email: user.email
         },
-        body: JSON.stringify({ name, email, password }), // Send the form data to the API
-      });
+        accessToken: "appwrite-session"
+      }));
 
-      if (response.ok) {
-        const data = await response.json();
-        setSuccess("Account created successfully!");
-        setError(""); // Clear error message
-        setLoading(false);
-
-        dispatch(
-          login({
-            user: data.user,
-            accessToken: data.accessToken,
-          })
-        );
-
-        // Clear form fields
-        setName("");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
-
-        // Navigate to the main page after a short delay
-        setTimeout(() => {
-          router.push("/");
-        }, 10);
-      } else {
-        const err = await response.json();
-        setError(err.message || "Failed to sign up");
-        setSuccess(""); // Clear success message
-        setLoading(false);
-
-      }
+      setSuccess("Account created successfully!");
+      router.push("/");
     } catch (error) {
-      setError("Something went wrong. Please try again.");
-      setSuccess(""); // Clear success message
+      setError(error.message);
+    } finally {
       setLoading(false);
     }
   };
