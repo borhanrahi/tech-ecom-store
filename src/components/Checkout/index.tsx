@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
+import { useRouter } from 'next/navigation';
 import Breadcrumb from "../Common/Breadcrumb";
 import Login from "./Login";
 import Shipping from "./Shipping";
@@ -8,11 +9,49 @@ import PaymentMethod from "./PaymentMethod";
 import Coupon from "./Coupon";
 import Billing from "./Billing";
 import OrderList from "./OrderList";
+import { loadStripe } from "@stripe/stripe-js";
+import { useAppSelector } from "@/redux/store";
+import { selectCartItems } from "@/redux/features/cart-slice";
+import { account } from '@/lib/appwrite';
 
 const Checkout = () => {
-  const handleSubmit = (e: React.FormEvent) => {
+  const router = useRouter();
+  const cartItems = useAppSelector(selectCartItems);
+
+  // Check authentication on component mount
+  useEffect(() => {
+    account.get().catch(() => {
+      router.push('/signin');
+    });
+  }, [router]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle checkout logic here
+    
+    try {
+      const user = await account.get();
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+      
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ items: cartItems }),
+      });
+
+      if (response.status === 401) {
+        router.push('/login');
+        return;
+      }
+
+      const { id: sessionId } = await response.json();
+      await stripe?.redirectToCheckout({ sessionId });
+      
+    } catch (error) {
+      console.error('Checkout error:', error);
+      router.push('/login');
+    }
   };
 
   return (
